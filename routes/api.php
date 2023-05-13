@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\FieldController;
 use App\Http\Controllers\API\FormController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,8 +24,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::group([
-    'middleware' => ['auth:sanctum'],
+    'middleware' => ['auth:sanctum', 'verified'],
     'prefix' => 'forms'
 ], function () {
-    Route::apiResource('/', FormController::class);
+    Route::get('/', [FormController::class, 'index']);
+    Route::post('/', [FormController::class, 'store']);
+    Route::get('/{form}', [FormController::class, 'show']);
+    Route::put('/{form}', [FormController::class, 'update']);
+    Route::delete('/{form}', [FormController::class, 'destroy']);
+
+
+    Route::group([
+        'prefix' => '{form}/fields'
+    ], function () {
+        Route::post('/', [FieldController::class, 'storeField']);
+        Route::put('/{field}', [FieldController::class, 'updateField']);
+        Route::delete('/{field}', [FieldController::class, 'destroyField']);
+    });
 });

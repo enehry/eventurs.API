@@ -45,11 +45,6 @@ class FormController extends Controller
             'description' => 'nullable|string|max:255',
             'starts_at' => 'nullable|date',
             'ends_at' => 'nullable|date',
-            'fields' => 'required|array',
-            'fields.*.question' => 'required|string|max:255',
-            'fields.*.type' => 'required|string|in:short_answer,long_answer,number,dropdown,scale',
-            'fields.*.options' => 'nullable|array',
-            'fields.*.index' => 'nullable|numeric',
         ]);
 
         $form = Form::create([
@@ -60,30 +55,21 @@ class FormController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        foreach ($validate['fields'] as $field) {
-            $form->fields()->create([
-                'question' => $field['question'],
-                'type' => $field['type'],
-                'options' => $field['options'],
-                'index' => $field['index'] ?? null,
-            ]);
-        }
 
         return response()->json([
             'message' => 'Form created successfully',
-            'form' => $form->with('fields'),
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Form $forms)
+    public function show(Form $form)
     {
         //
         return response()->json(
             // find the form with fields
-            Form::with('fields')->find($forms->id)
+            Form::with('fields')->find($form->id)->get()
         );
     }
 
@@ -93,6 +79,7 @@ class FormController extends Controller
     public function edit(Form $forms)
     {
         //
+
     }
 
     /**
@@ -108,6 +95,11 @@ class FormController extends Controller
      */
     public function destroy(Form $forms)
     {
-        //
+        // delete form
+        $forms->delete();
+
+        return response()->json([
+            'message' => 'Form deleted successfully',
+        ]);
     }
 }

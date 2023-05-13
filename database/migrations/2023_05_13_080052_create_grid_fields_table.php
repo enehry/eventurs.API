@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fields', function (Blueprint $table) {
+        Schema::create('grid_fields', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->enum('type', ['short_answer', 'long_answer', 'number', 'dropdown', 'scale', 'grid']);
-            $table->json('options')->nullable();
-            $table->integer('index')->nullable();
+            $table->string('row_question');
             $table->timestamps();
-            $table->foreignUuid('form_id')->references('id')->on('forms');
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fields');
+        Schema::dropIfExists('grid_fields');
     }
 };
