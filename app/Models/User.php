@@ -24,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo_url',
+        'google_id',
+        'facebook_id',
     ];
 
     /**
@@ -34,6 +37,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'google_id',
+        'facebook_id',
     ];
 
     /**

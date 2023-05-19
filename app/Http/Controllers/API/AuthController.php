@@ -22,8 +22,12 @@ class AuthController extends Controller
 
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
-                'message' => 'The credentials you entered did not match our records.'
-            ], 401);
+                'message' => 'The credentials you entered did not match our records.',
+                'errors' => [
+                    'email' => 'The provided credentials are incorrect.',
+                    'password' => 'The provided password is incorrect.'
+                ]
+            ], 422);
         }
 
         $user = User::where('email', $request->email)->firstOrFail();
@@ -33,6 +37,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
+            'current_user' => $user,
             'access_token' => $token
         ]);
     }

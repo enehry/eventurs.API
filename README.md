@@ -35,6 +35,7 @@ Response:
 ```json
 {
     "message": "Login successful",
+    "current_user": [user]
     "access_token": [token]
 }
 ```
@@ -57,6 +58,7 @@ Response
 ```json
 {
     "message": "User successfully created",
+    "current_user": [user]
     "access_token": [token]
 }
 ```
